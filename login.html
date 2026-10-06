@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal Login</title>
+    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="shortcut icon" href="/b42b27fe-7a17-4064-bb16-21133b0d4039.png" type="image/x-icon">
+</head>
+
+<body>
+
+
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Responsive Login</title>
+        <link rel="stylesheet" href="output.css">
+        <!-- Corrected Font Awesome Link (Using v6 CDN is safer) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            integrity="sha512-DTOQO9RTOI3Jl0hJ24lG1rKkMTXlSA6LGErBvL5I2jF3vL5S2R1V4H5F0J4S1v5r2H5C0H5H0M5F4T4R0I5G2L1A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!-- ADDED SweetAlert2 CDN for the success message -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+
+    <body>
+        <!-- Main Full-Screen Wrapper -->
+        <div
+            class="min-h-screen w-full flex justify-center items-center p-4 lg:p-10 bg-[url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=873&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-no-repeat">
+
+            <!-- Login Card Wrapper: Switches from column (mobile) to row (desktop) -->
+            <div
+                class="w-full max-w-sm lg:max-w-4xl min-h-[550px] rounded-2xl shadow-2xl overflow-hidden flex flex-col lg:flex-row bg-white">
+
+                <!-- LEFT/IMAGE Panel: Hidden on Mobile, Shown on Desktop -->
+                <div
+                    class="hidden lg:flex lg:w-1/2 flex-col justify-start p-8 
+                       bg-[linear-gradient(rgba(0,90,156,0.5),rgba(0,90,156,0.3)),url('https://plus.unsplash.com/premium_photo-1681843129112-f7d11a2f17e3?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-no-repeat bg-cover">
+
+                    <div class="font-sans text-5xl font-semibold text-white mb-20">C</div>
+
+                    <div class="space-y-2">
+                        <p class="font-sans text-4xl font-semibold text-white">Welcome</p>
+                        <p class="font-sans text-4xl font-semibold text-white">back to your</p>
+                        <p class="font-sans text-4xl font-semibold text-white">workspace.</p>
+                    </div>
+                </div>
+
+                <!-- RIGHT/FORM Panel: Full Width on Mobile, Half Width on Desktop -->
+                <div class="w-full lg:w-1/2 p-8 bg-white">
+
+                    <!-- Title -->
+                    <div class="text-3xl text-gray-800 mb-6 font-bold font-sans">Log In</div>
+
+                    <!-- Social Logins -->
+                    <div class="w-full mb-6 space-y-4">
+                        <div
+                            class="h-14 border border-gray-300 rounded-lg flex items-center justify-center space-x-4 hover:bg-gray-50 cursor-pointer">
+                            <i
+                                class="fa-brands fa-google text-2xl bg-[conic-gradient(from_0deg_at_center,#EA4335_6%,#4285F4_30%,#34A853_55%,#FBBC05_80%,#EA4335_100%)] bg-clip-text text-transparent"></i>
+                            <span class="text-lg text-gray-800 font-semibold">Log in with Google</span>
+                        </div>
+                        <div
+                            class="h-14 border border-gray-300 rounded-lg flex items-center justify-center space-x-4 hover:bg-gray-50 cursor-pointer">
+                            <i class="fa-brands fa-facebook text-2xl text-blue-800"></i>
+                            <span class="text-lg text-gray-800 font-semibold">Log in with Facebook</span>
+                        </div>
+                    </div>
+
+                    <!-- OR Divider -->
+                    <div class="w-full flex items-center justify-center my-6">
+                        <div class="h-px w-5/12 bg-gray-300"></div>
+                        <span class="mx-4 text-gray-500 font-medium text-sm">OR</span>
+                        <div class="h-px w-5/12 bg-gray-300"></div>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form action="" id="loginform" novalidate class="space-y-4">
+
+                        <!-- Email Input -->
+                        <div>
+                            <input type="email" id="email" placeholder="Email Address"
+                                class="h-12 w-full text-gray-700 border border-gray-300 text-base px-3 font-medium rounded-lg focus:ring-2 focus:ring-[#005A9C] focus:border-transparent">
+                            <p id="emailerror" class="text-red-600 text-sm mt-1 hidden">Error</p>
+                        </div>
+
+                        <!-- Password Input with Toggle -->
+                        <div class="relative">
+                            <input type="password" id="password" placeholder="Password"
+                                class="h-12 w-full text-gray-700 border border-gray-300 text-base px-3 font-medium rounded-lg focus:ring-2 focus:ring-[#005A9C] focus:border-transparent">
+
+                            <!-- Eye Icon/Password Toggle -->
+                            <span id="togglePassword"
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 cursor-pointer">
+                                <i class="fa-solid fa-eye"></i>
+                            </span>
+                            <p id="passworderror" class="text-red-600 text-sm mt-1 hidden">Error</p>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button id="loginBtn" type="submit"
+                            class="h-12 w-full mt-3 text-lg font-semibold flex items-center justify-center gap-2 bg-[#005A9C] text-white px-5 py-2 rounded-lg hover:bg-[#004b80] transition duration-300 disabled:opacity-70 disabled:cursor-not-allowed">
+
+                            <svg id="spinner" class="hidden size-5 animate-spin text-white" viewBox="0 0 24 24"
+                                fill="none">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z">
+                                </path>
+                            </svg>
+
+                            <span id="btnText">Log In</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    </html>
+
+
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById("loginBtn");
+            const spinner = document.getElementById("spinner");
+            const btnText = document.getElementById("btnText");
+            const form = document.getElementById("loginform");
+
+            const emailRef = document.getElementById("email");
+            const passwordRef = document.getElementById("password");
+            const emailerror = document.getElementById("emailerror");
+            const passworderror = document.getElementById("passworderror");
+            const togglePassword = document.getElementById("togglePassword");
+
+         
+            togglePassword.addEventListener('click', () => {
+                
+                const type = passwordRef.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordRef.setAttribute('type', type);
+                const icon = togglePassword.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+
+        
+            form.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                emailerror.classList.add("hidden");
+                passworderror.classList.add("hidden");
+
+                let email = emailRef.value.trim();
+                let password = passwordRef.value.trim();
+
+                if (!email) {
+                    emailerror.textContent = "Please enter your email address.";
+                    emailerror.classList.remove("hidden");
+                    return;
+                }
+                if (!email.includes("@") || !email.includes(".")) {
+                    emailerror.textContent = "Invalid email format.";
+                    emailerror.classList.remove("hidden");
+                    return;
+                }
+                if (!password) {
+                    passworderror.textContent = "Please enter your password.";
+                    passworderror.classList.remove("hidden");
+                    return;
+                }
+
+            
+                spinner.classList.remove("hidden");
+                btnText.textContent = "Logging in...";
+                btn.disabled = true;
+
+         
+                setTimeout(() => {
+                    spinner.classList.add("hidden");
+
+                    if (email === "admin@gmail.com" && password === "12345") {
+                        Swal.fire({
+                            title: "Login Successful!",
+                            text: "Welcome back to your workspace 🎉",
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false,
+                            background: "#f9fafb",
+                            color: "#111827",
+                        });
+                        setTimeout(() => {
+                            window.location.href = "/home.html";
+                        }, 1000);
+                    } else {
+                        passworderror.textContent = "Invalid Email or Password.";
+                        passworderror.classList.remove("hidden");
+                        btnText.textContent = "Log In";
+                        btn.disabled = false;
+                    }
+                }, 1000);
+            });
+        });
+    </script>
+    
+</body>
+
+</html>

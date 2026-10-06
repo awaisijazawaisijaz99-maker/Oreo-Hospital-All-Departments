@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>General Hospital | Excellence in Healthcare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="shortcut icon" href="/favicon-32x32 (1).png" type="image/x-icon">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* Mobile menu transitions */
+        .mobile-menu {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Active nav link style */
+        .nav-active {
+            color: #0A84FF !important;
+            font-weight: 600;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0A84FF;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="font-sans m-0 p-0 overflow-x-hidden">
+    <!-- Top Bar -->
+    <div class="w-full bg-[#0A84FF] text-white text-center py-2.5 px-4 text-sm md:text-base">
+        <i class="fas fa-phone-alt mr-2"></i> Emergency call: (406) 555-0120
+    </div>
+
+    <!-- Navigation Bar with Mobile Toggle -->
+    <nav class="w-full bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20 md:h-24">
+            <!-- Logo -->
+            <div class="flex items-center gap-1 md:gap-2">
+                <div
+                    class="relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#0070C0] rounded-full shadow-md">
+                    <svg viewBox="0 0 100 100" class="w-7 h-7 md:w-8 md:h-8 fill-white">
+                        <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+                    </svg>
+                </div>
+                <div class="flex flex-col font-sans leading-tight text-[#333333]">
+                    <span class="text-base md:text-lg font-light tracking-wider">GENERAL</span>
+                    <span class="text-base md:text-lg font-bold tracking-wider">HOSPITAL</span>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <ul class="hidden lg:flex items-center gap-8 text-[#646666] font-medium">
+                <li><a href="#home" class="nav-link hover:text-blue-600 transition-colors">Home</a></li>
+                <li><a href="#about-us" class="nav-link hover:text-blue-600 transition-colors">About Us</a></li>
+                <li><a href="#services" class="nav-link hover:text-blue-600 transition-colors">Services</a></li>
+                <li><a href="#contact" class="nav-link hover:text-blue-600 transition-colors">Contact</a></li>
+            </ul>
+
+            <!-- Desktop Appointment Button -->
+            <div class="hidden lg:block">
+                <a href="#appointment"
+                    class="bg-[#0A84FF] text-white px-6 py-3 rounded-[10px] font-bold hover:bg-blue-700 transition-all shadow-md">
+                    Book Appointment
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="lg:hidden text-[#646666] text-2xl p-2 focus:outline-none">
+                <i id="menu-icon" class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="lg:hidden hidden bg-white border-t border-gray-100 shadow-lg mobile-menu">
+            <ul class="flex flex-col items-center gap-5 py-6 px-4">
+                <li><a href="#home"
+                        class="mobile-nav-link text-[#646666] font-medium hover:text-blue-600 transition-colors text-lg">Home</a>
+                </li>
+                <li><a href="#about-us"
+                        class="mobile-nav-link text-[#646666] font-medium hover:text-blue-600 transition-colors text-lg">About
+                        Us</a></li>
+                <li><a href="#services"
+                        class="mobile-nav-link text-[#646666] font-medium hover:text-blue-600 transition-colors text-lg">Services</a>
+                </li>
+                <li><a href="#contact"
+                        class="mobile-nav-link text-[#646666] font-medium hover:text-blue-600 transition-colors text-lg">Contact</a>
+                </li>
+                <li class="w-full mt-2">
+                    <a href="#appointment"
+                        class="block bg-[#0A84FF] text-white px-6 py-3 rounded-[10px] font-bold text-center">
+                        Book Appointment
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Background Image -->
+    <section id="home"
+        class="relative min-h-[70vh] md:min-h-[85vh] flex items-center justify-center bg-cover bg-center bg-no-repeat"
+        style="background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+        <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30"></div>
+        <div class="relative z-10 container mx-auto px-6 text-center md:text-left">
+            <h1
+                class="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight max-w-4xl mx-auto md:mx-0">
+                Transforming Lives Through Excellence in Healthcare
+            </h1>
+            <p class="text-white/90 text-base md:text-lg mt-5 max-w-2xl mx-auto md:mx-0">
+                We are committed to providing exceptional patient care and promoting wellness in our community.
+            </p>
+            <div class="mt-8">
+                <a href="#appointment"
+                    class="inline-block bg-[#69727D] hover:bg-[#7b8796] text-white px-8 py-3 rounded-[10px] underline font-semibold transition-all shadow-lg">
+                    Book An Appointment
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three Cards Section -->
+    <div class="bg-gray-50 py-16 px-4 sm:px-8 md:px-12 lg:px-16">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div
+                class="bg-white border border-gray-200 rounded-2xl p-8 md:p-10 flex flex-col items-start shadow-md hover:shadow-xl transition-all">
+                <div class="w-12 h-1 bg-blue-800 mb-6"></div>
+                <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-4">Find a Doctor</h2>
+                <p class="text-gray-500 text-base leading-relaxed mb-8">
+                    Discover exceptional healthcare professionals at General Hospital; access licensed physicians in
+                    various medical fields.
+                </p>
+                <a href="#"
+                    class="group flex items-center text-blue-700 font-bold hover:text-blue-900 transition-colors mt-auto">
+                    Doctor Schedule
+                    <span class="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                </a>
+            </div>
+            <div
+                class="bg-white border border-gray-200 rounded-2xl p-8 md:p-10 flex flex-col items-start shadow-md hover:shadow-xl transition-all">
+                <div class="w-12 h-1 bg-blue-800 mb-6"></div>
+                <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-4">Make an Appointment</h2>
+                <p class="text-gray-500 text-base leading-relaxed mb-8">
+                    Schedule an appointment with our top medical professionals through our online booking service.
+                </p>
+                <a href="#"
+                    class="group flex items-center text-blue-700 font-bold hover:text-blue-900 transition-colors mt-auto">
+                    Contact Us
+                    <span class="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                </a>
+            </div>
+            <div
+                class="bg-white border border-gray-200 rounded-2xl p-8 md:p-10 flex flex-col items-start shadow-md hover:shadow-xl transition-all">
+                <div class="w-12 h-1 bg-blue-800 mb-6"></div>
+                <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-4">Find a Condition</h2>
+                <p class="text-gray-500 text-base leading-relaxed mb-8">
+                    Explore a range of conditions with our comprehensive guide to common illnesses and injuries.
+                </p>
+                <a href="#"
+                    class="group flex items-center text-blue-700 font-bold hover:text-blue-900 transition-colors mt-auto">
+                    Need Help?
+                    <span class="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Section -->
+    <section id="about-us" class="bg-[#F0FAFF] py-16 px-6 md:py-24 md:px-12 lg:px-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <p class="text-sm font-bold text-gray-400 uppercase tracking-[0.2em] mb-2">About Us</p>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 tracking-tight max-w-4xl mx-auto">
+                    We always deliver expertise and compassion in every interaction.
+                </h1>
+            </div>
+            <div class="flex flex-col md:flex-row items-center gap-10 lg:gap-16 mt-8">
+                <div class="w-full md:w-1/2">
+                    <div class="overflow-hidden rounded-3xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                            alt="Medical Team"
+                            class="w-full h-[400px] md:h-[550px] object-cover hover:scale-105 transition-transform duration-500" />
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <h1 class="text-2xl lg:text-3xl font-semibold text-slate-900 leading-tight mb-6">
+                        Experience exceptional medical care at General Hospital, a facility designed to provide
+                        comfortable and personalized healthcare.
+                    </h1>
+                    <p class="text-gray-600 text-base mb-6 leading-relaxed">
+                        General Hospital is a premier medical facility that provides top-notch medical care. With
+                        state-of-the-art technologies and experienced professionals, we offer personalized treatment
+                        options for all kinds of medical conditions.
+                    </p>
+                    <p class="text-gray-500 italic text-base mb-8 leading-relaxed border-l-4 border-blue-200 pl-4">
+                        "Experience top-notch medical care at General Hospital, where our expert team ensures your
+                        well-being."
+                    </p>
+                    <a href="#"
+                        class="inline-block border-2 border-blue-500 text-blue-600 font-semibold px-8 py-3 rounded-md hover:bg-blue-500 hover:text-white transition-all duration-300">
+                        Read More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="bg-white py-16 px-4 sm:px-8 lg:px-16">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <p class="text-sm font-bold text-gray-400 uppercase tracking-[0.2em] mb-2">Primary Care</p>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900">Medical Advancements</h1>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                <div
+                    class="border border-gray-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                        alt="Medical Advancements"
+                        class="w-full h-64 object-cover hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h2 class="text-xl font-bold mb-3 text-gray-800">Medical Advancements</h2>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-4">State-of-the-art facility offering
+                            comprehensive dental care with emphasis on patient comfort.</p>
+                        <a href="#" class="text-blue-600 font-bold inline-flex items-center group">Learn More <span
+                                class="ml-2 transition-transform group-hover:translate-x-1">→</span></a>
+                    </div>
+                </div>
+                <div
+                    class="border border-gray-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all">
+                    <img src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                        alt="Counseling"
+                        class="w-full h-64 object-cover hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h2 class="text-xl font-bold mb-3 text-gray-800">Counseling</h2>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-4">Qualified therapists providing
+                            personalized counseling services to help overcome challenges.</p>
+                        <a href="#" class="text-blue-600 font-bold inline-flex items-center group">Learn More <span
+                                class="ml-2 transition-transform group-hover:translate-x-1">→</span></a>
+                    </div>
+                </div>
+                <div
+                    class="border border-gray-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all">
+                    <img src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                        alt="Family Medicine"
+                        class="w-full h-64 object-cover hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h2 class="text-xl font-bold mb-3 text-gray-800">Family Medicine</h2>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-4">Experienced physicians providing
+                            comprehensive medical care for individuals and families.</p>
+                        <a href="#" class="text-blue-600 font-bold inline-flex items-center group">Learn More <span
+                                class="ml-2 transition-transform group-hover:translate-x-1">→</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Blue Container -->
+    <div class="w-full bg-[#0076ce] py-12 px-6 md:px-12 lg:px-20">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <h2 class="text-white text-2xl md:text-3xl lg:text-4xl font-bold text-center md:text-left">
+                Take the first step towards better health. Book your appointment now!
+            </h2>
+            <a href="#appointment"
+                class="inline-block border-2 rounded-[10px] underline border-white text-white px-6 py-3 font-semibold hover:bg-white hover:text-[#0076ce] transition-all duration-300">
+                Book An Appointment
+            </a>
+        </div>
+    </div>
+
+    <!-- Why Choose Us Section -->
+    <div class="bg-white py-16 px-6 md:py-24 md:px-12 lg:px-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div class="order-2 lg:order-1">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Why Choose Us</h2>
+                <p class="text-gray-600 mb-10 text-lg leading-relaxed">We provide exceptional healthcare services with
+                    patient-centric approach and modern facilities.</p>
+                <div class="space-y-6">
+                    <div class="border-b border-gray-200 pb-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">20+ years of services</h3>
+                        <p class="text-gray-600">Over 20 years of exceptional healthcare services, making us a top
+                            choice in the industry.</p>
+                    </div>
+                    <div class="border-b border-gray-200 pb-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Leading healthcare provider</h3>
+                        <p class="text-gray-600">A leading healthcare provider delivering top-notch medical care.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Patient-centric care</h3>
+                        <p class="text-gray-600">Patient-centric care is at the core of our values.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="relative order-1 lg:order-2">
+                <div class="overflow-hidden rounded-2xl shadow-xl">
+                    <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                        alt="Healthcare Professional"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meet Our Team Section -->
+    <div class="w-full bg-[#F0FAFF] py-16 px-6 md:py-24 md:px-12 lg:px-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="text-blue-600 font-bold tracking-widest uppercase text-sm">Our Team</span>
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mt-2">Meet Our Professionals</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+                <div class="flex flex-col group cursor-pointer">
+                    <div
+                        class="aspect-square bg-[#E8F1F9] rounded-2xl overflow-hidden mb-4 shadow-md group-hover:shadow-xl transition-all">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Floyd Miles"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900">Floyd Miles</h3>
+                    <p class="text-gray-500 text-sm">Director of Operations</p>
+                </div>
+                <div class="flex flex-col group cursor-pointer">
+                    <div
+                        class="aspect-square bg-[#E8F1F9] rounded-2xl overflow-hidden mb-4 shadow-md group-hover:shadow-xl transition-all">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Jacob Jones"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900">Jacob Jones</h3>
+                    <p class="text-gray-500 text-sm">Medical Services Manager</p>
+                </div>
+                <div class="flex flex-col group cursor-pointer">
+                    <div
+                        class="aspect-square bg-[#E8F1F9] rounded-2xl overflow-hidden mb-4 shadow-md group-hover:shadow-xl transition-all">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Courtney Henry"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900">Courtney Henry</h3>
+                    <p class="text-gray-500 text-sm">Assistant Admissions Director</p>
+                </div>
+                <div class="flex flex-col group cursor-pointer">
+                    <div
+                        class="aspect-square bg-[#E8F1F9] rounded-2xl overflow-hidden mb-4 shadow-md group-hover:shadow-xl transition-all">
+                        <img src="https://randomuser.me/api/portraits/men/76.jpg" alt="Devon Lane"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900">Devon Lane</h3>
+                    <p class="text-gray-500 text-sm">Medical Manager</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Stories / Rating Section -->
+    <div class="w-full bg-white py-16 px-6 md:py-24 md:px-12 lg:px-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12 text-center md:text-left">
+                <span class="text-blue-600 font-bold tracking-widest uppercase text-sm">Patient Stories</span>
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mt-2">What Our Patients Say</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                <div class="bg-gray-50 border border-gray-200 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all">
+                    <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                    <p class="text-gray-600 leading-relaxed mb-6 italic">"Excellent care and compassionate staff. The
+                        facilities are world-class. Highly recommended!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-300 overflow-hidden"><img
+                                src="https://randomuser.me/api/portraits/women/33.jpg" alt="Patient"></div>
+                        <span class="font-bold text-gray-800">Sarah Johnson</span>
+                    </div>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all">
+                    <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                    <p class="text-gray-600 leading-relaxed mb-6 italic">"Professional doctors and modern equipment. My
+                        experience was truly amazing from start to finish."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-300 overflow-hidden"><img
+                                src="https://randomuser.me/api/portraits/men/52.jpg" alt="Patient"></div>
+                        <span class="font-bold text-gray-800">Michael Chen</span>
+                    </div>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all">
+                    <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                    <p class="text-gray-600 leading-relaxed mb-6 italic">"The team at General Hospital saved my life.
+                        Forever grateful for their expertise and kindness."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-300 overflow-hidden"><img
+                                src="https://randomuser.me/api/portraits/women/90.jpg" alt="Patient"></div>
+                        <span class="font-bold text-gray-800">Emily Rodriguez</span>
+                    </div>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all">
+                    <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                    <p class="text-gray-600 leading-relaxed mb-6 italic">"Best hospital experience. Clean, efficient,
+                        and the staff truly cares about patients."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-300 overflow-hidden"><img
+                                src="https://randomuser.me/api/portraits/men/42.jpg" alt="Patient"></div>
+                        <span class="font-bold text-gray-800">David Williams</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Contact Section -->
+    <footer id="contact">
+        <div class="relative w-full py-16 px-6 md:py-20 md:px-12 lg:px-20 bg-cover bg-center bg-no-repeat"
+            style="background-image: url('https://images.unsplash.com/photo-1504813184591-01572f98c85f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80');">
+            <div class="absolute inset-0 bg-[#0f172a]/90"></div>
+            <div class="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start gap-8">
+                <div class="max-w-xl text-white">
+                    <h2 class="text-4xl md:text-6xl font-bold mb-5 tracking-tight">Need help?</h2>
+                    <p class="text-gray-300 text-base md:text-lg leading-relaxed">Our dedicated team is available 24/7
+                        to assist you with any medical concerns or appointment requests.</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-8 text-white">
+                    <div>
+                        <p class="text-gray-400 text-sm uppercase tracking-wider mb-2">For enquiries, please call</p>
+                        <p class="text-2xl md:text-3xl font-bold hover:text-blue-400 transition-colors cursor-pointer">
+                            (406) 555-0120</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 text-sm uppercase tracking-wider mb-2">For appointments</p>
+                        <p class="text-2xl md:text-3xl font-bold hover:text-blue-400 transition-colors cursor-pointer">
+                            (406) 555-0120</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bottom Footer -->
+        <div class="bg-[#fcfbf7] py-12 px-6 md:px-12 lg:px-20 border-t border-gray-200">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div
+                            class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                            +</div>
+                        <span class="font-bold text-base uppercase">General Hospital</span>
+                    </div>
+                    <p class="text-gray-500 text-sm">1234 Washington Ave, Manchester, Kentucky 39495.</p>
+                    <p class="text-gray-500 text-sm font-semibold mt-2">(406) 555-0120</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-4 text-blue-900">Patient Information</h3>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-blue-600">Find a Doctor</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Health Library</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Clinical Trials</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-4 text-blue-900">Research & Education</h3>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-blue-600">School of Medicine</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Medical Education</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Research</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-4 text-blue-900">For Health Professionals
+                    </h3>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-blue-600">Transfer a patient</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Refer a Patient</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Nursing</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="max-w-7xl mx-auto border-t border-gray-200 mt-10 pt-6 flex flex-col sm:flex-row justify-between text-xs text-gray-400 gap-2">
+                <p>© 2026 General Hospital. All rights reserved.</p>
+                <p><a href="#" class="hover:underline">Privacy Policy</a> | <a href="#" class="hover:underline">Terms of
+                        Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                menuIcon.classList.toggle('fa-bars');
+                menuIcon.classList.toggle('fa-times');
+            });
+        }
+
+        // Close mobile menu when clicking a link
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.add('fa-bars');
+                menuIcon.classList.remove('fa-times');
+            });
+        });
+
+        // Active link highlighting on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        function updateActiveLink() {
+            let current = '';
+            const scrollPosition = window.scrollY + 150;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('nav-active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('nav-active');
+                }
+            });
+
+            mobileNavLinks.forEach(link => {
+                link.classList.remove('text-blue-600');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-blue-600');
+                } else {
+                    link.classList.remove('text-blue-600');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveLink);
+        window.addEventListener('load', updateActiveLink);
+    </script>
+</body>
+
+</html>

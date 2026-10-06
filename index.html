@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>:: Oreo Hospital :: All Departments</title>
+
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="material-design-iconic-font.css">
+    <link rel="stylesheet" href="material-design-iconic-font.min.css.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="shortcut icon" href="https://wrraptheme.com/templates/oreo/hospital/html/light/favicon.ico"
+        type="image/x-icon">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-teal': '#0090d2',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* REQUIRED NON-TAILWIND STYLES */
+
+        /* 1. Necessary for JS-toggled Sidebar Overlay */
+        #sidebar-overlay.hidden {
+            display: none !important;
+        }
+
+        /* 2. Necessary for JS-controlled Smooth Dropdown Collapse */
+        .collapsible {
+            transition: max-height 0.3s ease-in-out;
+            overflow: hidden;
+        }
+
+        /* 3. Layout and Scrollbar Customization */
+        #sidebar {
+            height: 100vh;
+            overflow: hidden;
+            /* Aside itself is NOT scrollable */
+        }
+
+        /* --- NEW SCROLLABLE CONTAINER (TARGETING MAIN CONTENT WRAPPER) --- */
+        /* I will create a new ID for the scrollable content wrapper */
+        #scrollable-content-wrapper {
+            /* Height is 100% of viewport minus the fixed logo header (~52px) */
+            height: calc(100vh - 52px);
+            overflow-y: auto;
+        }
+
+        /* --- MINIMAL CUSTOM SCROLLBAR STYLES (MOVED TO NEW WRAPPER) --- */
+        #scrollable-content-wrapper::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #scrollable-content-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #scrollable-content-wrapper::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            /* Black/low opacity for a light sidebar */
+            border-radius: 20px;
+        }
+
+        #scrollable-content-wrapper {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+        }
+
+        /* Sidebar transitions */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+            will-change: transform;
+        }
+
+        /* Overlay styles */
+        #sidebar-overlay {
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #sidebar-overlay:not(.hidden) {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Dropdown collapsible */
+        .collapsible {
+            transition: max-height 0.3s ease-in-out;
+            overflow: hidden;
+        }
+
+        /* Sidebar scroll area */
+        #scrollable-content-wrapper {
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        @media (max-width: 1023px) {
+            #scrollable-content-wrapper {
+                height: calc(100vh - 130px) !important;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #scrollable-content-wrapper {
+                height: calc(100vh - 70px);
+            }
+        }
+
+        #scrollable-content-wrapper::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #scrollable-content-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #scrollable-content-wrapper::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+        }
+
+        /* Rotate arrow */
+        .dropdown-arrow.rotate-45 {
+            transform: rotate(90deg);
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        /* Prevent body scroll when sidebar open on mobile */
+        body.sidebar-open {
+            overflow: hidden;
+        }
+
+        /* Responsive Sidebar Positioning */
+        @media (max-width: 1023px) {
+            #sidebar {
+                top: 60px !important;
+                bottom: 0 !important;
+                height: calc(100vh - 60px) !important;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #sidebar {
+                inset-y-0;
+                height: 100vh;
+                top: auto;
+            }
+        }
+
+        /* Main content clickable area */
+        #main-content {
+            cursor: default;
+        }
+    </style>
+</head>
+
+<body class="bg-[#EDEFF2] min-h-screen">
+
+    <!-- Mobile/Tablet Overlay - Visible only on sm/md screens when sidebar is open -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden"></div>
+    <div class="flex">
+        <!-- Sidebar - Removed overflow-y-auto from aside -->
+        <aside id="sidebar"
+            class="fixed inset-y-0 left-0 z-40 w-60 bg-white text-[#777777] h-screen transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out">
+
+            <!-- LOGO AREA (FIXED/NON-SCROLLABLE) -->
+            <div class="flex justify-evenly w-[80%] items-center">
+                <div
+                    class="p-4 text-[14px] h-10 w-20 border-2 border-[#27D2D3] rounded-3xl mt-3   flex items-center justify-center hover:cursor-pointer">
+
+                    <i class="fas fa-home mr-2  text-[#888888]"></i>
+                    <span class="text-[14px] text-[#979797]">Oreo</span>
+
+                </div>
+                <div class="text-[14px] w-[30&] mt-3 text-[#979797] font-normal hover:cursor-pointer">Doctor</div>
+            </div>
+
+            <!-- START: SCROLLABLE CONTENT WRAPPER -->
+            <div id="scrollable-content-wrapper">
+
+                <!-- Profile Card -->
+
+
+                <!-- Navigation Links (REMOVED overflow-y-auto from here) -->
+                <nav id="sidebar-nav" class="flex flex-col p-2 space-y-2">
+                    <div class="flex flex-col items-center p-4 bg-white w-full max-w-sm mx-auto">
+                        <div
+                            class="relative w-18 h-18 overflow-hidden flex justify-center items-center hover:cursor-pointer">
+                            <img class="w-[85%] h-[85%] object-cover rounded-full shadow-[0_0_6px_9px_#EFEFEF] border-4 border-white  "
+                                src="https://wrraptheme.com/templates/oreo/hospital/html/assets/images/profile_av.jpg"
+                                alt="" loading="lazy">
+                        </div>
+                        <div class="text-[18px] font-[550] text-gray-800 mt-2">
+                            Dr. Charlotte
+                        </div>
+                        <p class="text-[12px] text-gray-500 font-normal ">
+                            Neurologist
+                        </p>
+                    </div>
+                    <div class="w-full ">
+                        <hr class="text-[#979797]">
+                    </div>
+                    <p class="text-[12px] font-bold text-[#455A64]">--Main</p>
+
+                    <ul class="list-none ps-3">
+                        <li
+                            class="w-[214.99px] h-[39.9px] group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d] ">
+                            <i class="fas fa-home  text-[12px] mr-2 text-[#555555] group-hover:text-[#00CFD1]"></i>
+                            <span class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">Dashboard</span>
+                        </li>
+                        <li
+                            class="w-[214.99px] h-[39.9px] group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <i
+                                class="fa-regular fa-calendar-check  text-[12px] mr-2 text-[#555555] group-hover:text-[#00CFD1]"></i>
+                            <span class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">Appointment</span>
+
+                        </li>
+                        <!-- dropdown-2 -->
+                        <li
+                            class="w-[214.99px]  group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <div class="space-y-1">
+                                <div data-target="#admin-dropdown-1"
+                                    class="dropdown-toggle flex items-center justify-between  rounded-lg  cursor-pointer">
+                                    <div class="flex items-center">
+                                        <i
+                                            class="fa-solid fa-user-doctor text-[12px] mr-2 text-[#555555] group-hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">Doctors</span>
+                                    </div>
+                                    <i
+                                        class="dropdown-arrow fas fa-angle-right text-[8px] ms-23 text-[#555555] group-hover:text-[#00CFD1] transition-transform duration-300"></i>
+                                </div>
+                                <div id="admin-dropdown-1" class="collapsible max-h-0">
+                                    <a href="#"
+                                        class="group flex items-center mt-4 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">All
+                                            Doctors</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Add
+                                            Doctor</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Doctor
+                                            Profile</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Doctor
+                                            Schedule</span>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </li>
+                        <!-- dropdown-2 -->
+                        <li
+                            class="w-[214.99px]  group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <div class="space-y-1">
+                                <div data-target="#admin-dropdown-2"
+                                    class="dropdown-toggle flex items-center justify-between  rounded-lg  cursor-pointer">
+                                    <div class="flex items-center">
+                                        <i
+                                            class="fa-regular fa-user text-[12px] mr-2 text-[#555555] group-hover:text-[#00CFD1]"></i>
+
+                                        <span
+                                            class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">Patients</span>
+                                    </div>
+                                    <i
+                                        class="dropdown-arrow fas fa-angle-right text-[8px] ms-23 text-[#555555] group-hover:text-[#00CFD1] transition-transform duration-300"></i>
+                                </div>
+                                <div id="admin-dropdown-2" class="collapsible max-h-0">
+                                    <a href="#"
+                                        class="group flex items-center mt-4 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">All
+                                            Patients</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Add
+                                            Patient</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Patient
+                                            Profile</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Invoice</span>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </li>
+                        <!-- dropdown-3 -->
+                        <li
+                            class="w-[214.99px]  group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <div class="space-y-1">
+                                <div data-target="#admin-dropdown-3"
+                                    class="dropdown-toggle flex items-center justify-between  rounded-lg  cursor-pointer">
+                                    <div class="flex items-center">
+                                        <i
+                                            class="fa-solid fa-wallet text-[12px] mr-2 text-[#555555] group-hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">Payments</span>
+                                    </div>
+                                    <i
+                                        class="dropdown-arrow fas fa-angle-right text-[8px] ms-20 text-[#555555] group-hover:text-[#00CFD1] transition-transform duration-300"></i>
+                                </div>
+                                <div id="admin-dropdown-3" class="collapsible max-h-0">
+                                    <a href="#"
+                                        class="group flex items-center mt-4 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Payments</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Add
+                                            Payments</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Invoice</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Dropdown-4 -->
+                        <li
+                            class="w-[214.99px]  group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <div class="space-y-1">
+                                <div data-target="#admin-dropdown-4"
+                                    class="dropdown-toggle flex items-center justify-between  rounded-lg  cursor-pointer">
+                                    <div class="flex items-center">
+                                        <i
+                                            class="fa-solid fa-tag text-[12px] font-bold text-[#06a8aa] mr-2  group-hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] text-[#06a8aa] ms-1 font-bold group-hover:text-[#00CFD1]">Departments</span>
+                                    </div>
+                                    <i
+                                        class="dropdown-arrow fas fa-angle-right text-[8px] ms-14 text-[#555555] group-hover:text-[#00CFD1] transition-transform duration-300"></i>
+                                </div>
+                                <div id="admin-dropdown-4" class="collapsible max-h-0">
+                                    <a href="#"
+                                        class="group flex items-center mt-4 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Add</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">All
+                                            Department</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Cardiology</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Pulmonology</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Gynecology</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Nuerology</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Urology</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Gastrology</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Pediatrician</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-2 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Laboratory</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- dropdown-5 -->
+                        <li
+                            class="w-[214.99px]  group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <div class="space-y-1">
+                                <div data-target="#admin-dropdown-5"
+                                    class="dropdown-toggle flex items-center justify-between  rounded-lg  cursor-pointer">
+                                    <div class="flex items-center">
+                                        <i
+                                            class="fa-solid fa-lock text-[12px] mr-2 text-[#555555] group-hover:text-[#00CFD1]"></i>
+
+                                        <span
+                                            class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">Authentication</span>
+                                    </div>
+                                    <i
+                                        class="dropdown-arrow fas fa-angle-right text-[8px] ms-13 text-[#555555] group-hover:text-[#00CFD1] transition-transform duration-300"></i>
+                                </div>
+                                <div id="admin-dropdown-5" class="collapsible max-h-0">
+                                    <a href="#"
+                                        class="group flex items-center mt-4 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Sign
+                                            IN</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Sign
+                                            UP</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Forgot
+                                            Password</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Page
+                                            404</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Page
+                                            500</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Page
+                                            Offline</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Locked
+                                            Screen</span>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </li>
+
+
+                    </ul>
+                    <!-- extra extansion -->
+                    <p class="text-[13px] font-bold text-[#455A64]">--EXTRA COMPONENTS</p>
+                    <!-- second-ul -->
+                    <ul class="list-none ps-3">
+                        <!-- dropdown-6 -->
+                        <li
+                            class="w-[214.99px]  group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <div class="space-y-1">
+                                <div data-target="#admin-dropdown-6"
+                                    class="dropdown-toggle flex items-center justify-between  rounded-lg  cursor-pointer">
+                                    <div class="flex items-center">
+                                        <i
+                                            class="fa-brands fa-blogger-b text-[12px] mr-2 text-[#555555] group-hover:text-[#00CFD1]"></i>
+
+                                        <span
+                                            class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">Blog</span>
+                                    </div>
+                                    <i
+                                        class="dropdown-arrow fas fa-angle-right text-[8px] ms-29 text-[#555555] group-hover:text-[#00CFD1] transition-transform duration-300"></i>
+                                </div>
+                                <div id="admin-dropdown-6" class="collapsible max-h-0">
+                                    <a href="#"
+                                        class="group flex items-center mt-4 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Blog
+                                            Dashboard</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">New
+                                            Post</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Blog
+                                            List</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Blog
+                                            Grid</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Blog
+                                            Single</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+
+                        <!-- dropdown-8 -->
+                        <li
+                            class="w-[214.99px]  group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <div class="space-y-1">
+                                <div data-target="#admin-dropdown-8"
+                                    class="dropdown-toggle flex items-center justify-between  rounded-lg  cursor-pointer">
+                                    <div class="flex items-center">
+                                        <i
+                                            class="fa-solid fa-file text-[12px] mr-2 text-[#555555] group-hover:text-[#00CFD1]"></i>
+
+                                        <span class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">File
+                                            Manager</span>
+                                    </div>
+                                    <i
+                                        class="dropdown-arrow fas fa-angle-right text-[8px] ms-16 text-[#555555] group-hover:text-[#00CFD1] transition-transform duration-300"></i>
+                                </div>
+                                <div id="admin-dropdown-8" class="collapsible max-h-0">
+                                    <a href="#"
+                                        class="group flex items-center mt-4 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">All
+                                            File</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Documents</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Media</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Images</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Blog
+                                            Single</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Dropdown-7 -->
+                        <li
+                            class="w-[214.99px]  group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <div class="space-y-1">
+                                <div data-target="#admin-dropdown-7"
+                                    class="dropdown-toggle flex items-center justify-between  rounded-lg  cursor-pointer">
+                                    <div class="flex items-center">
+
+                                        <span
+                                            class="text-[15px] font-black mr-2 text-[#555555] group-hover:text-[#00CFD1]">::</span>
+                                        <span
+                                            class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">App</span>
+                                    </div>
+                                    <i
+                                        class="dropdown-arrow fas fa-angle-right text-[8px] ms-[119.1px] text-[#555555] group-hover:text-[#00CFD1] transition-transform duration-300"></i>
+                                </div>
+                                <div id="admin-dropdown-7" class="collapsible max-h-0">
+                                    <a href="#"
+                                        class="group flex items-center mt-4 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Inbox</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Chat</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Contact
+                                            List</span>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </li>
+                        <!-- dropdown-9 -->
+                        <li
+                            class="w-[214.99px]  group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <div class="space-y-1">
+                                <div data-target="#admin-dropdown-9"
+                                    class="dropdown-toggle flex items-center justify-between  rounded-lg  cursor-pointer">
+                                    <div class="flex items-center">
+                                        <i
+                                            class="fa-brands fa-delicious text-[12px] mr-2 text-[#555555] group-hover:text-[#00CFD1]"></i>
+
+                                        <span
+                                            class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">Widgets</span>
+                                    </div>
+                                    <i
+                                        class="dropdown-arrow fas fa-angle-right text-[8px] ms-[93.1px] text-[#555555] group-hover:text-[#00CFD1] transition-transform duration-300"></i>
+                                </div>
+                                <div id="admin-dropdown-9" class="collapsible max-h-0">
+                                    <a href="#"
+                                        class="group flex items-center mt-4 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Apps
+                                            Widgetse</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Data
+                                            Widgetse</span>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </li>
+                        <!-- dropdown-10 -->
+                        <li
+                            class="w-[214.99px]  group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <div class="space-y-1">
+                                <div data-target="#admin-dropdown-10"
+                                    class="dropdown-toggle flex items-center justify-between  rounded-lg  cursor-pointer">
+                                    <div class="flex items-center">
+                                        <i
+                                            class="fa-regular fa-copy text-[12px] mr-2 text-[#555555] group-hover:text-[#00CFD1]"></i>
+
+                                        <span class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">Sample
+                                            Pages</span>
+                                    </div>
+                                    <i
+                                        class="dropdown-arrow fas fa-angle-right text-[8px] ms-14 text-[#555555] group-hover:text-[#00CFD1] transition-transform duration-300"></i>
+                                </div>
+                                <div id="admin-dropdown-10" class="collapsible max-h-0">
+                                    <a href="#"
+                                        class="group flex items-center mt-4 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Blank
+                                            Paper</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">RTL
+                                            Support</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Image
+                                            Gallery</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Profile</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Timeline</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Invoice</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Search
+                                            Results</span>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </li>
+                        <!-- dropdown-11 -->
+                        <li
+                            class="w-[214.99px]  group-hover:text-[#00CFD1] group flex items-center  p-2 text-[15px] rounded-lg cursor-pointer text-[#6d6d6d]">
+                            <div class="space-y-1">
+                                <div data-target="#admin-dropdown-11"
+                                    class="dropdown-toggle flex items-center justify-between  rounded-lg  cursor-pointer">
+                                    <div class="flex items-center">
+                                        <i
+                                            class="zmdi zmdi-swap-alt text-[12px] mr-2 text-[#555555] group-hover:text-[#00CFD1]"></i>
+
+                                        <span class="text-[14px] text-[#6d6d6d] ms-1 group-hover:text-[#00CFD1]">User
+                                            Intertace (UI)</span>
+                                    </div>
+                                    <i
+                                        class="dropdown-arrow fas fa-angle-right text-[8px] ms-7 text-[#555555] group-hover:text-[#00CFD1] transition-transform duration-300"></i>
+                                </div>
+                                <div id="admin-dropdown-11" class="collapsible max-h-0">
+                                    <a href="#"
+                                        class="group flex items-center mt-4 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">UI
+                                            Kit</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Alerts</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Collapse</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Colors</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Dailogs</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Icons</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">List
+                                            Group</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Media
+                                            Object</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Modals</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Notifications</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Progress
+                                            bars</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Range
+                                            Sliders</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Sortable
+                                            & Nestable</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Tabs</span>
+                                    </a>
+                                    <a href="#"
+                                        class="group flex items-center mt-3 rounded-lg text-sm  hover:text-[#00CFD1] text-gray-700">
+                                        <i
+                                            class="fa-solid fa-arrow-right  text-[12px] mr-4 text-[#555555] hover:text-[#00CFD1]"></i>
+                                        <span
+                                            class="text-[14px] w-full text-[#6d6d6d]  hover:text-[#00CFD1] ">Waves</span>
+                                    </a>
+
+
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!--extra -->
+                    <p class="text-[13px] font-bold text-[#455A64]">--EXTRA </p>
+                    <div class="bg-white  p-2   w-full max-w-lg mx-auto">
+
+                        <!-- Progress Bar 1: TRAFFIC THIS MONTH (67%) -->
+                        <div class="mb-6">
+
+                            <!-- Header Row -->
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm sm:text-[13px]   tracking-wider text-[#F96939]">
+                                    TRAFFIC THIS MONTH
+                                </span>
+                                <span id="traffic-percent" class="text-sm sm:text-[13px]  text-[#F96939]">
+                                    67%
+                                </span>
+                            </div>
+
+                            <!-- Progress Bar Track -->
+                            <div class="w-full h-0.5 bg-gray-200">
+                                <!-- Progress Indicator (width will be set by JS) -->
+                                <div id="traffic-progress"
+                                    class="mt-2 h-full bg-[#F96939] transition-all duration-1000 ease-out"
+                                    style="width: 0;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar 2: SERVER LOAD (86%) -->
+                        <div class="mb-0">
+
+                            <!-- Header Row -->
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm sm:text-[13px]  uppercase tracking-wider text-[#46B3FF]">
+                                    SERVER LOAD
+                                </span>
+                                <span id="server-percent" class="text-sm sm:text-[13px]  text-[#46B3FF]">
+                                    86%
+                                </span>
+                            </div>
+
+                            <!-- Progress Bar Track -->
+                            <div class="w-full h-0.5 bg-gray-200">
+                                <!-- Progress Indicator (width will be set by JS) -->
+                                <div id="server-progress"
+                                    class="mt-2 h-full bg-[#46B3FF] transition-all duration-1000 ease-out"
+                                    style="width: 0;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!-- END: SCROLLABLE CONTENT WRAPPER -->
+        </aside>
+
+
+        <div id="main-content" class="flex-1 lg:ml-60 transition-all duration-200 ease-in-out">
+
+
+            <header class="sticky top-0 z-20 bg-[#01D8DA] shadow-md p-2 flex items-center justify-between">
+
+                <!-- Menu Button is visible on Mobile/Tablet (lg:hidden) -->
+                <button id="sidebar-toggle" class="lg:hidden p-2 text-white hover:bg-white hover:text-[#01D8DA] rounded-md transition-all duration-300 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+
+                <!-- FIXED: Added explicit w- and h- classes -->
+                <div class="w-[75%] flex justify-start items-center">
+                    <div class="w-30 flex justify-center gap-1">
+                        <div class="bg-[url('https://wrraptheme.com/templates/oreo/hospital/html/assets/images/logo.svg')] bg-[100% 100%] bg-no-repeat  
+                w-10 h-8 relative z-30">
+                        </div>
+                        <p class="text-white text-[19px]">OREO</p>
+                    </div>
+                    <ul class="list-none flex justify-evenly items-center h-full w-60">
+                        <li class="text-white text-[14px] font-semibold"><i
+                                class="fa-solid fa-arrow-right-arrow-left"></i>
+                        </li>
+                        <li class="text-white text-[14px] font-semibold"><i class="fa-regular fa-calendar"></i></li>
+                        <li class="text-white text-[14px] font-semibold"><i class="fa-solid fa-envelope"></i></li>
+                        <li class="text-white text-[14px] font-semibold"><i class="fa-regular fa-id-card"></i></li>
+                        <li class="relative text-white hover:text-primary-teal cursor-pointer">
+                            <!-- Bell Icon -->
+                            <i class="fas fa-bell text-[14px]"></i>
+
+                            <!-- Ping Animation and Solid Dot Container (Positioned on the top-right of the bell icon) -->
+                            <span class="absolute top-3 right-1 transform translate-x-1 -translate-y-1">
+
+                                <!-- Animated Ping (Smaller size and radius) -->
+                                <span class="relative flex size-[7px] rounded-full">
+                                    <span
+                                        class="absolute inline-flex h-full w-full animate-ping rounded-full bg-black opacity-75"></span>
+                                    <span class="relative inline-flex size-[7px] rounded-full bg-black"></span>
+                                </span>
+                            </span>
+                        </li>
+                        <li class="relative text-white hover:text-primary-teal cursor-pointer">
+                            <!-- Bell Icon -->
+                            <i class="fa-solid fa-flag text-[14px]"></i>
+
+                            <!-- Ping Animation and Solid Dot Container (Positioned on the top-right of the bell icon) -->
+                            <span class="absolute top-3 right-0 transform translate-x-1 -translate-y-1">
+
+                                <!-- Animated Ping (Smaller size and radius) -->
+                                <span class="relative flex size-[7px]">
+                                    <span
+                                        class="absolute inline-flex h-full w-full animate-ping rounded-full bg-black opacity-75"></span>
+                                    <span class="relative inline-flex size-[7px] rounded-full bg-black"></span>
+                                </span>
+                            </span>
+                        </li>
+                    </ul>
+
+                    <div class="relative flex max-w-xs sm:max-w-lg mx-3 hidden sm:block">
+                        <input type="text" placeholder="Search..."
+                            class="w-full text-white py-2 px-7 border rounded-full focus:outline-none focus:ring-2 focus:ring-primary-teal text-[12px] sm:text-base">
+                        <i class="fas fa-search absolute text-white right-3 top-2.5 text-sm sm:text-base"></i>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <button class="p-1 sm:p-2 text-gray-600 hover:text-primary-teal relative">
+
+                        <i class="fa-solid fa-power-off text-white text-[10px] sm:text-xl"></i>
+                        <i class="fa-solid fa-gear ms-3 animate-spin  text-white text-[10px] sm:text-xl"></i>
+
+
+
+                    </button>
+
+                </div>
+            </header>
+
+
+
+            <main class="bg-gray-100 min-h-screen pb-10">
+                <!-- Optimized Header Section -->
+                <div class="bg-[#01D8DA] px-6 py-8 mb-8">
+                    <div class="max-w-7xl mx-auto flex flex-col gap-4">
+                        <!-- Left Side: Title -->
+                        <div class="text-white">
+                            <h1 class="text-2xl font-semibold">All Departments</h1>
+                            <p class="text-sm opacity-90">Welcome to Oreo</p>
+                        </div>
+
+                        <!-- Right Side: Breadcrumbs & Add Button -->
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                            <nav
+                                class="hidden sm:flex items-center bg-black/10 px-4 py-2 rounded-full text-white text-sm">
+                                <i class="fas fa-home mr-2"></i>
+                                <span>Oreo</span>
+                                <span class="mx-2">/</span>
+                                <span>Departments</span>
+                                <span class="mx-2">/</span>
+                                <span class="opacity-70">Alle</span>
+                            </nav>
+                            <button id="loginBtn" class="bg-[#20c9cb] text-white 
+           px-4 py-2 
+           rounded-full 
+           flex items-center gap-2 
+           text-sm font-medium 
+           shadow-md 
+           hover:bg-[#0fb5b7] 
+           transition-all duration-300 w-fit">
+
+                                <i class="fas fa-sign-in-alt text-sm"></i>
+                                <span>Login</span>
+
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="loadingPopup"
+                    class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+
+                    <div class="bg-white/10 border border-white/20 rounded-2xl px-8 py-6 text-center shadow-lg">
+
+                        <!-- Spinner -->
+                        <div
+                            class="w-12 h-12 border-4 border-gray-300 border-t-[#01D8DA] rounded-full animate-spin mx-auto">
+                        </div>
+
+                        <p class="text-white mt-4 text-sm tracking-wide">
+                            Logging in...
+                        </p>
+
+                    </div>
+
+                </div>
+                <!-- Responsive Grid System -->
+                <!-- sm: 1 col, md: 2 cols, lg: 3 cols -->
+                <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- Department Card 1 -->
+                    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
+                        <div class="relative overflow-hidden">
+                            <img class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="https://wrraptheme.com/templates/oreo/hospital/html/assets/images/image1.jpg"
+                                alt="Cardiology" />
+                        </div>
+
+                        <div class="p-6">
+                            <h2 class="text-lg font-bold text-slate-700 uppercase mb-4">Cardiology</h2>
+
+                            <!-- Team Section -->
+                            <div class="flex items-center gap-3 mb-6">
+                                <span class="text-slate-400 text-sm font-medium">Team</span>
+                                <div class="flex -space-x-2">
+                                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                                        src="https://i.pravatar.cc/150?u=1" alt="doc">
+                                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                                        src="https://i.pravatar.cc/150?u=2" alt="doc">
+                                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                                        src="https://i.pravatar.cc/150?u=3" alt="doc">
+                                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                                        src="https://i.pravatar.cc/150?u=4" alt="doc">
+                                    <div
+                                        class="h-5 w-5 rounded-full bg-orange-500 text-white flex items-center justify-center text-[10px] ring-2 ring-white self-end -ml-1">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-gray-100 pt-6">
+                                <p class="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2">
+                                    How all this mistaken al idea of denouncing pleasure praisings pain was
+                                    complete[...]
+                                </p>
+                                <button
+                                    class="px-6 py-2 rounded-full border border-[#01D8DA] text-[#01D8DA] text-sm font-medium hover:bg-[#01D8DA] hover:text-white transition-all">
+                                    More
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Repeat Card 2 (Same Structure) -->
+                    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
+                        <div class="relative overflow-hidden">
+                            <img class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="https://wrraptheme.com/templates/oreo/hospital/html/assets/images/image1.jpg"
+                                alt="Pulmonology" />
+                        </div>
+                        <div class="p-6">
+                            <h2 class="text-lg font-bold text-slate-700 uppercase mb-4">Pulmonology</h2>
+                            <div class="flex items-center gap-3 mb-6">
+                                <span class="text-slate-400 text-sm font-medium">Team</span>
+                                <div class="flex -space-x-2">
+                                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                                        src="https://i.pravatar.cc/150?u=5" alt="doc">
+                                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                                        src="https://i.pravatar.cc/150?u=6" alt="doc">
+                                    <div
+                                        class="h-5 w-5 rounded-full bg-orange-500 text-white flex items-center justify-center text-[10px] ring-2 ring-white self-end -ml-1">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 pt-6">
+                                <p class="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2">
+                                    Who chooses to enjoy a pleasure that has consequences, or one who avoids a pain[...]
+                                </p>
+                                <button
+                                    class="px-6 py-2 rounded-full border border-[#01D8DA] text-[#01D8DA] text-sm font-medium hover:bg-[#01D8DA] hover:text-white transition-all">
+                                    More
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Repeat Card 3 (Same Structure) -->
+                    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
+                        <div class="relative overflow-hidden">
+                            <img class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="https://wrraptheme.com/templates/oreo/hospital/html/assets/images/image1.jpg"
+                                alt="Gynecology" />
+                        </div>
+                        <div class="p-6">
+                            <h2 class="text-lg font-bold text-slate-700 uppercase mb-4">Gynecology</h2>
+                            <div class="flex items-center gap-3 mb-6">
+                                <span class="text-slate-400 text-sm font-medium">Team</span>
+                                <div class="flex -space-x-2">
+                                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                                        src="https://i.pravatar.cc/150?u=8" alt="doc">
+                                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                                        src="https://i.pravatar.cc/150?u=9" alt="doc">
+                                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                                        src="https://i.pravatar.cc/150?u=10" alt="doc">
+                                    <div
+                                        class="h-5 w-5 rounded-full bg-orange-500 text-white flex items-center justify-center text-[10px] ring-2 ring-white self-end -ml-1">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 pt-6">
+                                <p class="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2">
+                                    Who chooses to enjoy a pleasure that has annoying, or one who avoids a pain[...]
+                                </p>
+                                <button
+                                    class="px-6 py-2 rounded-full border border-[#01D8DA] text-[#01D8DA] text-sm font-medium hover:bg-[#01D8DA] hover:text-white transition-all">
+                                    More
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        // --- JAVASCRIPT: ABSOLUTELY NECESSARY FOR INTERACTIVITY ---
+
+        const sidebar = document.getElementById('sidebar');
+        const toggleButton = document.getElementById('sidebar-toggle');
+        const overlay = document.getElementById('sidebar-overlay');
+        const body = document.body;
+
+        // 1. Sidebar Toggle Logic (Required for Mobile/Tablet Off-Canvas Menu)
+        const toggleSidebar = () => {
+            const isHidden = sidebar.classList.toggle('-translate-x-full');
+
+            if (isHidden) {
+                overlay.classList.add('hidden');
+                body.classList.remove('overflow-hidden');
+            } else {
+                overlay.classList.remove('hidden');
+                body.classList.add('overflow-hidden');
+            }
+        };
+
+        toggleButton.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // 1.5 Close sidebar when clicking on main content (only on sm/md screens)
+        const mainContent = document.getElementById('main-content');
+        mainContent.addEventListener('click', (e) => {
+            if (window.innerWidth < 1024) { // Only on sm/md screens
+                // Check if sidebar is not hidden
+                if (!sidebar.classList.contains('-translate-x-full')) {
+                    // Don't close if clicking on toggle button
+                    if (!e.target.closest('#sidebar-toggle')) {
+                        toggleSidebar();
+                    }
+                }
+            }
+        });
+
+        // 2. Responsive Logic (Required to manage sidebar state on resize/desktop)
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) { // 'lg' breakpoint
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('hidden');
+                body.classList.remove('overflow-hidden');
+            }
+        });
+
+        if (window.innerWidth >= 1024) {
+            sidebar.classList.remove('-translate-x-full');
+        }
+
+        // 3. Dropdown Logic (Required for dynamic max-height/scrollHeight)
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const targetId = toggle.getAttribute('data-target');
+                const dropdownContent = document.querySelector(targetId);
+                const dropdownArrow = toggle.querySelector('.dropdown-arrow');
+
+                if (dropdownContent && dropdownArrow) {
+                    dropdownArrow.classList.toggle('rotate-45');
+
+                    if (dropdownContent.classList.contains('max-h-0')) {
+                        // Expand (Uses JS to calculate height)
+                        dropdownContent.classList.remove('max-h-0');
+                        dropdownContent.style.maxHeight = dropdownContent.scrollHeight + "px";
+                    } else {
+                        // Collapse (Uses JS to trigger smooth transition to 0)
+                        dropdownContent.style.maxHeight = dropdownContent.scrollHeight + "px";
+                        setTimeout(() => {
+                            dropdownContent.classList.add('max-h-0');
+                            dropdownContent.style.maxHeight = "0";
+                        }, 10);
+                    }
+                }
+            });
+        });
+        // nav-bar-Progress
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressData = [
+                { id: 'traffic', value: 67 },
+                { id: 'server', value: 86 }
+            ];
+
+            progressData.forEach(item => {
+                const progressElement = document.getElementById(`${item.id}-progress`);
+
+                if (progressElement) {
+                    // Set the width after a short delay to trigger the CSS transition (animation)
+                    setTimeout(() => {
+                        progressElement.style.width = `${item.value}%`;
+                    }, 100);
+                }
+            });
+        });
+
+        // dropdown-1
+        // const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+
+        // dropdownToggles.forEach(toggle => {
+        //     toggle.addEventListener('click', () => {
+        //         // ... toggle max-height and rotation ...
+        //     });
+        // });
+
+        // login btn js
+
+        document.getElementById("loginBtn").addEventListener("click", () => {
+            const popup = document.getElementById("loadingPopup");
+
+            // show popup
+            popup.classList.remove("hidden");
+
+            // redirect after delay
+            setTimeout(() => {
+                window.location.href = "/login.html";
+            }, 2000);
+        });
+
+    </script>
+</body>
+
+</html>
